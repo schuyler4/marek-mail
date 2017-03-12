@@ -1,26 +1,33 @@
 import 'package:angular2/core.dart';
 
+import 'user_service.dart';
+import 'user.dart';
+
 @Component(
   selector: 'my-auth',
-  templateUrl: 'auth_component.html'
+  templateUrl: 'auth_component.html',
+  providers: const [UserService]
 )
 
 class AuthComponent {
   String username;
   String password;
   List<String> errors = [];
+  User user;
 
-  bool validate() {
-    if(username == null || password == null) {
-      errors.add('fields not filled out');
-      return false;
+  final UserService _userService;
+  AuthComponent(this._userService);
+
+  void logInClicked() {
+    user = _userService.getUser(username, password);
+    if(user != null) {
+      print('all good');
+    } else {
+      errors.add('user not found');
     }
-    return true;
   }
 
   void signUpClicked() {
-    if(validate()) {
-      print("all good");
-    }
+    print('sign up was clicked');
   }
 }
